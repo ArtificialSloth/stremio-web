@@ -6,7 +6,8 @@ const classnames = require('classnames');
 const debounce = require('lodash.debounce');
 const { useTranslation } = require('react-i18next');
 const { default: Icon } = require('@stremio/stremio-icons/react');
-const { Image, MainNavBars, MetaRow, MetaItem, withCoreSuspender, getVisibleChildrenRange } = require('stremio/common');
+const { withCoreSuspender, getVisibleChildrenRange } = require('stremio/common');
+const { Image, MainNavBars, MetaItem, MetaRow } = require('stremio/components');
 const useSearch = require('./useSearch');
 const styles = require('./styles');
 
@@ -96,14 +97,17 @@ const Search = ({ queryParams }) => {
                                         );
                                     }
                                     case 'Err': {
-                                        return (
-                                            <MetaRow
-                                                key={index}
-                                                className={classnames(styles['search-row'], 'animation-fade-in')}
-                                                catalog={catalog}
-                                                message={catalog.content.content}
-                                            />
-                                        );
+                                        if (catalog.content.content !== 'EmptyContent') {
+                                            return (
+                                                <MetaRow
+                                                    key={index}
+                                                    className={classnames(styles['search-row'], 'animation-fade-in')}
+                                                    catalog={catalog}
+                                                    message={catalog.content.content}
+                                                />
+                                            );
+                                        }
+                                        return null;
                                     }
                                     default: {
                                         return (
